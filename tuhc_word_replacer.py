@@ -1,5 +1,5 @@
 from re import search, compile, findall
-from os.path import exists
+from os.path import exists, abspath, expanduser
 from pyinputplus import inputFilepath, inputStr, inputYesNo
 import json
 import string
@@ -25,6 +25,8 @@ Depends: pyinputplus
 output_valid = False
 input_path = inputFilepath("Please enter the filepath for your mspa.json file "
                            "(Located in Asset Pack/archive/data/mspa.json: ")
+input_path = abspath(expanduser(input_path))
+
 while not output_valid:
     output_path = inputFilepath("Please enter the filepath for your finished mod: ")
     if exists(output_path):
@@ -32,6 +34,8 @@ while not output_valid:
             output_valid = True
     else:
         output_valid = True
+
+output_path = abspath(expanduser(output_path))
 
 input_word = inputStr("Please enter the word you want to replace: ")
 output_word = inputStr("Please enter the word you want to replace it with: ")
