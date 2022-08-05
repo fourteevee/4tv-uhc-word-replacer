@@ -28,7 +28,7 @@ input_path = inputFilepath("Please enter the filepath for your mspa.json file "
 while not output_valid:
     output_path = inputFilepath("Please enter the filepath for your finished mod: ")
     if exists(output_path):
-        if inputYesNo(output_path + "exists, overwrite?"):
+        if inputYesNo(output_path + " exists, overwrite? "):
             output_valid = True
 
 input_word = inputStr("Please enter the word you want to replace: ")
