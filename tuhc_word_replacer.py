@@ -30,6 +30,8 @@ while not output_valid:
     if exists(output_path):
         if inputYesNo(output_path + " exists, overwrite? ") != "no":
             output_valid = True
+    else:
+        output_valid = True
 
 input_word = inputStr("Please enter the word you want to replace: ")
 output_word = inputStr("Please enter the word you want to replace it with: ")
