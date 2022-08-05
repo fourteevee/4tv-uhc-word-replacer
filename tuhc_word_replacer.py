@@ -28,13 +28,12 @@ input_path = abspath(expanduser(input_path))
 
 while not output_valid:
     output_path = inputFilepath("Please enter the filepath for your finished mod: ")
+    output_path = abspath(expanduser(output_path))
     if exists(output_path):
         if inputYesNo(output_path + " exists, overwrite? ") != "no":
             output_valid = True
     else:
         output_valid = True
-
-output_path = abspath(expanduser(output_path))
 
 input_word = inputStr("Please enter the word you want to replace: ")
 output_word = inputStr("Please enter the word you want to replace it with: ")
