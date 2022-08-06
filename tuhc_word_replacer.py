@@ -156,26 +156,22 @@ def main() -> None:
                                 pass
 
                             case "content":
-                                # TODO: fix comments 'round these parts, they no longer reflect the code completely.
-
                                 # Here's the good stuff, the page content, which is usually words exclusively.
                                 for line_unstripped in json_contents[story][object_id][item].split("<br />"):
                                     line = format_input(strip_html(line_unstripped))
-
-                                    # figure out the chum handle of the person speaking in this line
-                                    try:
-                                        chumhandle = line[0:line.index(':')+1]
-                                    # the line doesn't a chum handle at all, so we have to set it to something i guess
-                                    except ValueError:
-                                        chumhandle = line[0:15]
-
                                     # Go ahead and read the format_input() and strip_html() functions below to
                                     # figure out what this does, but in short words it basically converts the raw
                                     # line of text split from an entire page's content and cleans all the extra
                                     # formatting off of it, rendering it much easier to modify.
+
+                                    # figure out the chum handle of the person speaking in this line
+                                    try:
+                                        chumhandle = line[0:line.index(':')+1]
+                                    except ValueError: # the line doesn't a chum handle at all, so we have to set it to something i guess
+                                        chumhandle = line[0:15]
+
+                                    # if the chum handle matches a character with some sort of typing quirk
                                     if "".join(chumhandle) in chum_handles.keys():
-                                        # This determines if the first 3 characters of the line of text match
-                                        # a chum handle that matches a character with some sort of typing quirk.
                                         key = chum_handles["".join(chumhandle)]
                                         # this converts that chum handle into a lowercase character name
                                         srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
