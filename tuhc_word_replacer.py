@@ -38,7 +38,6 @@ while not output_valid:
 input_word = inputStr("Please enter the word you want to replace: ")
 output_word = inputStr("Please enter the word you want to replace it with: ")
 
-
 def main() -> None:
     """
     This is the main body of the program, and it does most of the work. Yes, I know, "don't write everything in main!"
@@ -157,17 +156,27 @@ def main() -> None:
                                 pass
 
                             case "content":
+                                # TODO: fix comments 'round these parts, they no longer reflect the code completely.
+
                                 # Here's the good stuff, the page content, which is usually words exclusively.
                                 for line_unstripped in json_contents[story][object_id][item].split("<br />"):
                                     line = format_input(strip_html(line_unstripped))
+
+                                    # figure out the chum handle of the person speaking in this line
+                                    try:
+                                        chumhandle = line[0:line.index(':')+1]
+                                    # the line doesn't a chum handle at all, so we have to set it to something i guess
+                                    except ValueError:
+                                        chumhandle = line[0:15]
+
                                     # Go ahead and read the format_input() and strip_html() functions below to
                                     # figure out what this does, but in short words it basically converts the raw
                                     # line of text split from an entire page's content and cleans all the extra
                                     # formatting off of it, rendering it much easier to modify.
-                                    if "".join(line[0:3]) in chum_handles.keys():
+                                    if "".join(chumhandle) in chum_handles.keys():
                                         # This determines if the first 3 characters of the line of text match
                                         # a chum handle that matches a character with some sort of typing quirk.
-                                        key = chum_handles["".join(line[0:3])]
+                                        key = chum_handles["".join(chumhandle)]
                                         # this converts that chum handle into a lowercase character name
                                         srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
                                                        + input_quirked[key] + r"[^" +
@@ -200,64 +209,6 @@ def main() -> None:
                                             # write_to_mod() writes the appropriate line of text to the mod file to
                                             # replace one word with another. You can see that we add the extras back on.
 
-                                    elif "".join(line[0:7]) in names.keys():
-                                        # This does the same thing as above, but for troll names. 6 letters.
-                                        key = names["".join(line[0:7])]
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked[key] + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
-
-                                        if search(srch, line):
-                                            extras = search(srch, line).group().split(input_quirked[key])
-                                            write_to_mod(line, line.replace(extras[0] + input_quirked[key] + extras[1],
-                                                                            extras[0] + output_quirked[key] + extras[
-                                                                                1]),
-                                                         last_page_number)
-
-                                    elif "".join(line[0:9]) in names.keys():
-                                        # This does the same as above, but for caliborn and calliope.
-                                        key = names["".join(line[0:9])]
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked[key] + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
-
-                                        if search(srch, line):
-                                            extras = search(srch, line).group().split(input_quirked[key])
-                                            write_to_mod(line, line.replace(extras[0] + input_quirked[key] + extras[1],
-                                                                            extras[0] + output_quirked[key] + extras[
-                                                                                1]),
-                                                         last_page_number)
-
-                                    elif "".join(line[0:13]) in names.keys():
-                                        # This does the same as above, but for arquiusprite and erisolsprite
-                                        key = names["".join(line[0:13])]
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked[key] + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
-
-                                        if search(srch, line):
-                                            extras = search(srch, line).group().split(input_quirked[key])
-                                            write_to_mod(line, line.replace(extras[0] + input_quirked[key] + extras[1],
-                                                                            extras[0] + output_quirked[key] + extras[
-                                                                                1]),
-                                                         last_page_number)
-
-                                    elif "".join(line[0:15]) in names.keys():
-                                        # And finally, this does the same thing as above but specifically for
-                                        # davepetasprite. I am sure there is a better way to do all of this and make it
-                                        # much more condensed, but I just need a break from writing code for a bit
-                                        # before I try to tackle that.
-                                        key = names["".join(line[0:15])]
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked[key] + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
-
-                                        if search(srch, line):
-                                            extras = search(srch, line).group().split(input_quirked[key])
-                                            write_to_mod(line, line.replace(extras[0] + input_quirked[key] + extras[1],
-                                                                            extras[0] + output_quirked[key] + extras[
-                                                                                1]),
-                                                         last_page_number)
                                     else:
                                         # And finally, everyone else. because there are no other typing quirks present
                                         # in other characters (besides roxy when she is drunk, I guess? Good luck
