@@ -22,16 +22,24 @@ Depends: pyinputplus
 # An exercise for the mod author!
 
 output_valid = False
-input_path = inputFilepath("Please enter the filepath for your mspa.json file "
-                           "(Located in Asset Pack/archive/data/mspa.json: ")
-input_path = abspath(expanduser(input_path))
+while not output_valid:
+    input_path = inputFilepath("Please enter the filepath for your mspa.json file "
+                               "(Located in Asset Pack/archive/data/mspa.json: ")
+    input_path = abspath(expanduser(input_path))
+    if exists(input_path):
+        output_valid = True
+    else:
+        print("File doesn't exist!")
 
+output_valid = False
 while not output_valid:
     output_path = inputFilepath("Please enter the filepath for your finished mod: ")
     output_path = abspath(expanduser(output_path))
     if exists(output_path):
         if inputYesNo(output_path + " exists, overwrite? ") != "no":
             output_valid = True
+        else:
+            output_valid = False
     else:
         output_valid = True
 
