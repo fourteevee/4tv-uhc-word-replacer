@@ -3,25 +3,37 @@ import string
 from os.path import exists, abspath, expanduser
 from random import randint
 from re import search, compile, findall
-
 from pyinputplus import inputFilepath, inputStr, inputYesNo
 
 """
 Title: Word replacer for the Unofficial Homestuck Collection.
 Description: This is a program that, when run from the command line, creates a mod in js that can be used with TUHC. It
 replaces any given string with any other string, accounting for typing quirks.
-Author: Amelia Pytosh
-Date July 24th, 2022
-Version: b1
+Authors: Amelia Pytosh, yabobay
+Date Sept 18th, 2022
+Version: b1.1.1
 Depends: pyinputplus
 """
 
-# Ultimate baller rev. 2 (or b2?) update: use an swf decompiler to get each individual
+# Ultimate baller rev. 2 update: use an swf decompiler to get each individual
 # image and line of text from it, and then replace the text as normal as below
 # In addition, use cv2 to get the text from images and, rather than trying to
 # figure out how to in-place replace the text, just generate a second file
 # with a list of all swfs and images that contain the word that needs replacing.
 # An exercise for the mod author!
+
+"""
+Version timeline goals:
+1.1.1: Fish puns
+1.1.2: Cat puns
+1.1.3: Horse puns
+1.1.4: Various misc puns (Maybe this can be where we account for feferi's ----------E thingy)
+1.2.0: Damara Google translate API bullshit
+1.3.0: Homestuck 2
+2.0.0: Do the thing in the comment above ^^^
+
+
+"""
 DEBUG = False
 
 output_valid = True if DEBUG else False
@@ -444,9 +456,11 @@ def generate_quirks(content: str, is_input: bool) -> dict:
                 quirks[character] = content.replace("w", "ww").replace("v", "vv").replace("W", "Ww").replace("V", "Vv")
 
             case "feferi":
-                quirks[character] = content.replace("E", "-E").replace("H", ")(").replace("h", ")(")
+                sentence = content.split()
+                for ind, word in enumerate(sentence):
+                    sentence[ind] = fishpun_converter(word)
+                quirks[character] = " ".join(sentence).replace("E", "-E").replace("H", ")(").replace("h", ")(")
                 # TODO: Account for excitement where she does -----------E instead of -E
-                #   Fish puns? also not happening.
 
             case "damara":
                 quirks[character] = content
@@ -505,7 +519,6 @@ def generate_quirks(content: str, is_input: bool) -> dict:
                 for ind, word in enumerate(sentence):
                     sentence[ind] = fishpun_converter(word)
                 quirks[character] = " ".join(sentence).replace("E", "-E").replace("H", ")(")
-                # TODO: Same thing with feferi here.
 
             case "calliope":
                 quirks[character] = content.lower().replace("u", "U")
@@ -536,7 +549,10 @@ def fishpun_converter(content, freq=100):
     """Converts a string into a fish pun.
 
     :param content: The string to be converted.
-    :param freq: The frequency of fish puns. freq% chance of a fish pun.
+    :param freq: The frequency of fish puns. freq% chance of a fish pun. This does not currently work the way you would
+    expect it to. This function ends up only really being called twice, so no matter if it fails or succeeds the
+    coinflip, it will keep that result for all instances of input_word/output_word, rather than randomizing per.
+    This is due to an optimization made early on to prevent the continuious re-creation of quirked words, which is laggy
     :return: The converted string.
     """
     FISHPUNS = {"really": "reely", "real": "reel", "guilty": "gillty", "god": "cod", "kill": "krill", "pwn": "prawn",
@@ -581,9 +597,15 @@ def fishpun_converter(content, freq=100):
                 "shirk": "shark", "stark": "shark", "tone of": "tuna", "tune": "tuna",
                 "boy": "buoy", "about": "aboat", "bout": "boat", "jealous": "jellyfish", "what about": "waterboat",
                 "haul": "hull", "sooner": "schooner", "mother fucker": "glubber fucker"}
-    if randint(0, 100) <= freq:
+    # Yes, that's really the best way that I could come up with to do that.
+    error = randint(0, 100)
+    # "error" in the sense of "What is the percent chance that the speaker does not make an error".
+    # for example, if error is 90 there is a 10 percent chance that the speaker will make an error and not use a fish
+    # pun. Issues with this explained above.
+    if error <= freq:
         caps = True if content.isupper() else False
         first = True if content[0].isupper() else False
+        # There is likely a better way to do this but this works fine :)
         content = content.lower()
         for item in FISHPUNS:
             if content == item:
