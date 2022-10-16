@@ -137,7 +137,12 @@ class Character():
         return self.name + " " + self.chumhandle + " " + self.input_word_quirked + " " + self.output_word_quirked + " " + str(self.rules)
 
     def __eq__(self, other):
-        return self.name == other.name and self.chumhandle == other.chumhandle and self.input_word_quirked == other.input_word_quirked and self.output_word_quirked == other.output_word_quirked and self.rules == other.rules
+        return \
+            self.name == other.name and \
+            self.chumhandle == other.chumhandle and \
+            self.input_word_quirked == other.input_word_quirked and \
+            self.output_word_quirked == other.output_word_quirked and \
+            self.rules == other.rules
 
     def __ne__(self, other):
         return not self.__eq__(other)
