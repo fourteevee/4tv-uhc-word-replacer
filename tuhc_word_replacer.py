@@ -200,7 +200,12 @@ class Character():
                         # TODO: One of these two is wrong VVV
                         word = word.swapcase()
                     elif subtype == "aLtErNaTiNg":
-                        word = word.swapcase()
+                        word_orig = list(word.lower())
+                        for i in range(len(word_orig)):
+                            if i % 2 != 0:
+                                word_orig[i] = word_orig[i].upper()
+                        word = "".join(word_orig)
+                        del word_orig
                     elif subtype == "alternating_WORDS":
                         pass
                         #TODO: Also do this one later
