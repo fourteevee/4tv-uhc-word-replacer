@@ -5,6 +5,7 @@ from os import walk
 from random import randint
 from re import search, compile, findall
 from pyinputplus import inputFilepath, inputStr, inputYesNo
+from tomllib import load as toml_load
 
 """
 Title: Word replacer for the Unofficial Homestuck Collection.
@@ -67,6 +68,7 @@ FUN_MODE = True
 class Character():
     name = ""
     chumhandle = ""
+    short_chumhandle = ""
     input_word_quirked = ""
     output_word_quirked = ""
     rules = {}
@@ -109,16 +111,14 @@ class Character():
         if rules == {}:
             return word
         else:
-            current_rule_name = ""
             for rule in rules:
-                current_rule_name = rule
                 type = ""
                 subtype = ""
                 for rule_data in rules[rule]:
                     if rule_data == "type":
-                        type = rules[rule]["type"]
+                        type = rules[rule]["type"].lower()
                     elif rule_data == "subtype":
-                        subtype = rules[rule]["subtype"]
+                        subtype = rules[rule]["subtype"].lower()
                 if type == "replacement":
                     if subtype == "regex":
                         pass
@@ -149,9 +149,13 @@ class Character():
                         #TODO: Also do this one later
                 elif type == "attachments":
                     if subtype == "prefix":
-                        word = rules[rule]["prefix"] + word
+                        pass
+                        # word = rules[rule]["prefix"] + word
+                        # this is broken until I can make it work per-line rather than just for individual words
                     elif subtype == "suffix":
-                        word = word + rules[rule]["suffix"]
+                        # word = word + rules[rule]["suffix"]
+                        # same.
+                        pass
                 elif type == "puns":
                     if subtype == "substitution":
                         caps = True if word.isupper() else False
@@ -176,10 +180,15 @@ class Character():
                     print("ERROR: Rule type not recognized: ", self.name, type, subtype)
             return word
 
-    def __init__(self, name, chumhandle, input_word, output_word, rules):
-        self.rules = rules
-        self.name = name
-        self.chumhandle = chumhandle
+    def __init__(self, data, input_word, output_word):
+        # Add the code here to parse whatever the TOML parser shits out
+        self.name = data["name"].split(" ")[0].upper()
+        self.chumhandle = data["handle"]
+        self.short_chumhandle = data["handle_short"]
+        data.pop("name")
+        data.pop("handle")
+        data.pop("handle_short")
+        self.rules = data
         self.input_word_quirked = self._generate_quirked_word(input_word)
         self.output_word_quirked = self._generate_quirked_word(output_word)
 
@@ -198,12 +207,6 @@ def main() -> None:
     input_word = "fuck" if DEBUG else inputStr("Please enter the word you want to replace: ")
     output_word = "shit" if DEBUG else inputStr("Please enter the word you want to replace it with: ")
 
-
-    CATPUNS = {}
-    FISHPUNS = {}
-    HORSEPUNS = {}
-    CURSES = {}
-
     characters = []
     for path, subdirs, files in walk("Characters"):
         for name in files:
@@ -211,18 +214,19 @@ def main() -> None:
                 # At this point you have a file object at join(path, name)
                 # that is a character file or is in the appropriate folder
                 # TOML interpretation code goes here TODO
-                pass
+                with open(join(path, name), "rb") as character_file:
+                    character_data = toml_load(character_file)
+                    characters.append(Character(character_data, input_word, output_word))
     # TODO: for each file in ./Characters/, create a character object and add it to the list/dict
-
     write_boilerplate(input_word, output_word, output_path, "header")
 
     # TODO: at this point we will need to go through the characters and generate the lines of modded text for every
     #   match. Good luck figuring that out, shitlips! Basically, re-create the original functionality with the new
     #  Character class.
     for character in characters:
-        search_and_replace(input_path, output_path, input_word, output_word, characters[character].input_word_quirked,
-                           characters[character].output_word_quirked, characters[character].name,
-                           characters[character].chumhandle)
+        search_and_replace(input_path, output_path, input_word, output_word, character.input_word_quirked,
+                           character.output_word_quirked, character.name,
+                           character.short_chumhandle)
 
     write_boilerplate(input_word, output_word, output_path, "footer")
 
@@ -304,14 +308,16 @@ def search_and_replace(input_path: str, output_path: str, input_word: str,
                                     try:
                                         pre_name = line[0:line.index(':')]
                                     except ValueError:  # the line doesn't a chum handle at all, so we have to set it to something i guess
+                                        # This might break shit? Who knows
                                         pre_name = line[0:15]
-
                                     # if the chum handle matches a character with some sort of typing quirk
-                                    if "".join(pre_name) == character_chumhandle:
+                                    if "".join(pre_name) in [character_chumhandle, "P"+character_chumhandle,
+                                                             "C" + character_chumhandle, "F" + character_chumhandle] \
+                                            and character_chumhandle != "N/A":
                                         # this converts that chum handle into a lowercase character name
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked.replace("(", "\(").replace(")","\)") + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
+                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+" +
+                                                       input_quirked.replace("(", "\(").replace(")","\)") +
+                                                       r"[^" + string.ascii_letters + r"1234567890]+")
                                         # This compiles a regex for the input text. It breaks down as such:
                                         # [^ - Negated set, meaning "match any character not in this list"
                                         #   abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 - The list.
@@ -340,11 +346,11 @@ def search_and_replace(input_path: str, output_path: str, input_word: str,
                                             # write_to_mod() writes the appropriate line of text to the mod file to
                                             # replace one word with another. You can see that we add the extras back on.
 
-                                    elif "".join(pre_name) == character_name:
+                                    elif "".join(pre_name) == character_name and character_name != "N/A":
                                         # This was removed for some reason? This is important for finding the chars who
                                         # do not have a chumhandle, but only a name. Otherwise it is just a duplicate of
                                         # the above code.
-                                        for length in [7, 9, 13, 14]: # TODO: This may be wrong +/- 1 maybe?
+                                        for length in [6, 8, 12, 13]:
                                             if line[0:length] == character_name:
                                                 srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
                                                                + input_quirked.replace("(", "\(").replace(")","\)") +
@@ -356,14 +362,14 @@ def search_and_replace(input_path: str, output_path: str, input_word: str,
                                                                                     extras[1], extras[0] +
                                                                                     output_quirked + extras[1]),
                                                                 last_page_number, output_path)
-                                    else:
+                                    elif character_name == "N/A" and character_chumhandle == "N/A":
                                         # And finally, everyone else. because there are no other typing quirks present
                                         # in other characters (besides roxy when she is drunk, I guess? Good luck
                                         # sorting that out lol), we can just pass it all to "other" which just replaces
                                         # the text without doing any substitutions.
-                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+"
-                                                       + input_quirked.replace("(", "\(").replace(")", "\)") + r"[^" +
-                                                       string.ascii_letters + r"1234567890]+")
+                                        srch = compile(r"[^" + string.ascii_letters + r"1234567890]+" +
+                                                       input_quirked.replace("(", "\(").replace(")", "\)") +
+                                                       r"[^" + string.ascii_letters + r"1234567890]+")
 
                                         if search(srch, line):
                                             extras = search(srch, line).group().split(input_quirked) \
