@@ -102,7 +102,7 @@ def main() -> None:
         boilerplate += "    edit(achive {\n"
         open_file.write(boilerplate)
 
-    with open(input_path, "r") as open_file:
+    with open(input_path, "r", encoding="utf-8") as open_file:
         # And here it begins, we start by reading the mspa.json file and parsing its contents.
         file_contents = open_file.read()
         # Taking the file and reading its contents as a single huge block
