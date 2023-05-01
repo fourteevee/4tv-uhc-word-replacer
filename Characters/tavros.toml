@@ -1,0 +1,8 @@
+name = "Tavros Nitram"
+handle = "adiosToreador"
+handle_short = "AT"
+
+[inverted]
+type = "case"
+subtype = "inverse"
+

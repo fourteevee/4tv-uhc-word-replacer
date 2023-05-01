@@ -1,0 +1,15 @@
+name = "Rufioh Nitram"
+handle = "N/A"
+handle_short = "N/A"
+
+["i to 1"]
+type = "replacement"
+subtype = "one-to-one"
+start = "i"
+end = "1"
+
+["I to 1"]
+type = "replacement"
+subtype = "one-to-one"
+start = "I"
+end = "1"

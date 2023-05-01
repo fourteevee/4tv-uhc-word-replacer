@@ -1,0 +1,20 @@
+name = "Aradia Megido"
+handle = "apocalypseArisen"
+handle_short = "AA"
+
+["o to 0"]
+type = "replacement"
+subtype = "one-to-one"
+start = "o"
+end = "0"
+
+["O to 0"]
+type = "replacement"
+subtype = "one-to-one"
+start = "O"
+end = "0"
+
+[lowercase]
+type = "case"
+subtype = "lower"
+

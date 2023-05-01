@@ -1,0 +1,14 @@
+name = "Caliborn"
+handle = "undyingUmbrage"
+handle_short = "uu"
+
+["upper case"]
+type = "case"
+subtype = "upper"
+
+["U to u"]
+type = "replacement"
+subtype = "one-to-one"
+start = "U"
+end = "u"
+

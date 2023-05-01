@@ -1,0 +1,8 @@
+name = "Kanaya Maryam"
+handle = "grimAuxiliatrix"
+handle_short = "GA"
+
+[capitalize]
+type = "case"
+subtype = "capitalize"
+

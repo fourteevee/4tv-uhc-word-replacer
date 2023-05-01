@@ -1,0 +1,28 @@
+name = "Cronus Ampora"
+handle = "N/A"
+handle_short = "N/A"
+
+["v to w"]
+type = "replacement"
+subtype = "one-to-one"
+start = "v"
+end = "w"
+
+["w to wv"]
+type = "replacement"
+subtype = "one-to-one"
+start = "w"
+end = "wv"
+
+["V to W"]
+type = "replacement"
+subtype = "one-to-one"
+start = "V"
+end = "W"
+
+["W to Wv"]
+type = "replacement"
+subtype = "one-to-one"
+start = "W"
+end = "Wv"
+
