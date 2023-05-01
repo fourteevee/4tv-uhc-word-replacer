@@ -1,0 +1,8 @@
+name = "Karkat Vantas"
+handle = "carcinoGeneticist"
+handle_short = "CG"
+
+["all caps"]
+type = "case"
+subtype = "upper"
+

@@ -1,0 +1,52 @@
+name = "Erisolsprite^2"
+handle = "N/A"
+handle_short = "N/A"
+
+["w to ww"]
+type = "replacement"
+subtype = "one-to-one"
+start = "w"
+end = "ww"
+
+["v to vv"]
+type = "replacement"
+subtype = "one-to-one"
+start = "v"
+end = "vv"
+
+["i to ii"]
+type = "replacement"
+subtype = "one-to-one"
+start = "i"
+end = "ii"
+
+["s to 2"]
+type = "replacement"
+subtype = "one-to-one"
+start = "s"
+end = "2"
+
+["W to WW"]
+type = "replacement"
+subtype = "one-to-one"
+start = "W"
+end = "WW"
+
+["V to VV"]
+type = "replacement"
+subtype = "one-to-one"
+start = "V"
+end = "VV"
+
+["I to II"]
+type = "replacement"
+subtype = "one-to-one"
+start = "I"
+end = "II"
+
+["S to 2"]
+type = "replacement"
+subtype = "one-to-one"
+start = "S"
+end = "2"
+

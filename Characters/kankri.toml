@@ -1,0 +1,15 @@
+name = "Kankri Vantas"
+handle = "N/A"
+handle_short = "N/A"
+
+["B to 6"]
+type = "replacement"
+subtype = "one-to-one"
+start = "B"
+end = "6"
+
+["O to 9"]
+type = "replacement"
+subtype = "one-to-one"
+start = "O"
+end = "9"

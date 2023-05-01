@@ -1,0 +1,28 @@
+name = "Eridan Ampora"
+handle = "caligulasAquarium"
+handle_short = "CA"
+
+["w to ww"]
+type = "replacement"
+subtype = "one-to-one"
+start = "w"
+end = "ww"
+
+["W to Ww"]
+type = "replacement"
+subtype = "one-to-one"
+start = "W"
+end = "Ww"
+
+["v to vv"]
+type = "replacement"
+subtype = "one-to-one"
+start = "v"
+end = "vv"
+
+["V to Vv"]
+type = "replacement"
+subtype = "one-to-one"
+start = "V"
+end = "Vv"
+

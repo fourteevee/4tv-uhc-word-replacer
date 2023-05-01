@@ -1,0 +1,8 @@
+name = "Gamzee Makara"
+handle = "terminallyCapricious"
+handle_short = "TC"
+
+["alternating case"]
+type = "case"
+subtype = "alternating"
+

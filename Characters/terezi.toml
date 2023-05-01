@@ -1,0 +1,44 @@
+name = "Terezi Pyrope"
+handle = "gallowsCalibrator"
+handle_short = "GC"
+
+["upper case"]
+type = "case"
+subtype = "upper"
+
+["A to 4"]
+type = "replacement"
+subtype = "one-to-one"
+start = "A"
+end = "4"
+
+["a to 4"]
+type = "replacement"
+subtype = "one-to-one"
+start = "a"
+end = "4"
+
+["E to 3"]
+type = "replacement"
+subtype = "one-to-one"
+start = "E"
+end = "3"
+
+["e to 3"]
+type = "replacement"
+subtype = "one-to-one"
+start = "e"
+end = "3"
+
+["I to 1"]
+type = "replacement"
+subtype = "one-to-one"
+start = "I"
+end = "1"
+
+["i to 1"]
+type = "replacement"
+subtype = "one-to-one"
+start = "i"
+end = "1"
+

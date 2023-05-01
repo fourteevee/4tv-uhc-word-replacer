@@ -1,0 +1,16 @@
+name = "Nepeta Leijon"
+handle = "arsenicCatnip"
+handle_short = "AC"
+
+["ee to 33"]
+type = "replacement"
+subtype = "one-to-one"
+start = "ee"
+end = "33"
+
+["EE to 33"]
+type = "replacement"
+subtype = "one-to-one"
+start = "EE"
+end = "33"
+
